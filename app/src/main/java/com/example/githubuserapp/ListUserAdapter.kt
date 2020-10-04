@@ -23,7 +23,6 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
         holder.imgPhoto.setImageResource(id)
         holder.tvUsername.text = user.name
         holder.tvLocation.text = user.location
-        holder.tvCompany.text = user.company
         holder.tvFollowers.text = user.followers + " Followers"
         holder.tvFollowing.text = user.following + " Following"
 
@@ -53,7 +52,6 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvUsername: TextView = itemView.findViewById(R.id.tv_username)
         var tvLocation: TextView = itemView.findViewById(R.id.tv_location)
-        var tvCompany: TextView = itemView.findViewById(R.id.tv_company)
         var tvFollowers: TextView = itemView.findViewById(R.id.tv_followers)
         var tvFollowing: TextView = itemView.findViewById(R.id.tv_following)
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)

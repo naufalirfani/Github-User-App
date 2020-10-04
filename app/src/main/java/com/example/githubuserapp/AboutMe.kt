@@ -1,13 +1,9 @@
 package com.example.githubuserapp
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.ViewAnimator
-import androidx.appcompat.app.ActionBar
 
 class AboutMe : AppCompatActivity() {
 
