@@ -19,7 +19,7 @@ class AboutMe : AppCompatActivity() {
         //set actionbar title
         actionbar!!.title = "About Me"
         //set back button
-        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val iv: ImageView = findViewById(R.id.img_my_photo)

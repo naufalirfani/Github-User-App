@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
@@ -26,11 +26,10 @@ class MovieDetail : AppCompatActivity() {
         val tvDataReceived: TextView = findViewById(R.id.tv_data_received)
         tvDataReceived.text = user.name
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionBar = supportActionBar
-        actionBar!!.setDisplayHomeAsUpEnabled(true)
-        actionBar.title = "Detail User"
+        val actionbar = supportActionBar
+        actionbar!!.title = "Detail User"
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp)
+        actionbar.setDisplayHomeAsUpEnabled(true)
 
         val id: Int = resources.getIdentifier("com.example.githubuserapp:drawable/${user.avatar}", null, null)
         img_photo.setImageResource(id)
