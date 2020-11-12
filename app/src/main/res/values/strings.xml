@@ -17,6 +17,7 @@
     <string name="width">250dp</string>
     <string name="location">Location</string>
     <string name="company">Company</string>
+    <string name="gambar_user">Gambar User</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

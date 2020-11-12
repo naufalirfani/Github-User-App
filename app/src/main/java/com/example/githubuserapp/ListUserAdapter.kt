@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 
 class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
@@ -20,9 +24,13 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val user = listUser[position]
         val id: Int = holder.itemView.resources.getIdentifier("com.example.githubuserapp:drawable/${user.avatar}", null, null)
-        holder.imgPhoto.setImageResource(id)
+        Glide.with(holder.itemView.context)
+            .load(id)
+            .apply(
+                RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(
+                    Target.SIZE_ORIGINAL))
+            .into(holder.imgPhoto)
         holder.tvUsername.text = user.name
-        holder.tvLocation.text = user.location
         holder.tvFollowers.text = user.followers + " Followers"
         holder.tvFollowing.text = user.following + " Following"
 
@@ -39,7 +47,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
 
         holder.itemView.setOnClickListener{
             val context = holder.itemView.context
-            val intent = Intent(context, MovieDetail::class.java)
+            val intent = Intent(context, MovieDetailActivity::class.java)
             intent.putExtra("userGithub", userGithub)
             context.startActivity(intent)
         }
@@ -51,7 +59,6 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvUsername: TextView = itemView.findViewById(R.id.tv_username)
-        var tvLocation: TextView = itemView.findViewById(R.id.tv_location)
         var tvFollowers: TextView = itemView.findViewById(R.id.tv_followers)
         var tvFollowing: TextView = itemView.findViewById(R.id.tv_following)
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)

@@ -19,7 +19,7 @@ class AboutMe : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val iv: ImageView = findViewById(R.id.img_my_photo)
-        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
+        iv.setImageResource(resources.getIdentifier("fotoku", "drawable", packageName))
 
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
