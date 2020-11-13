@@ -11,7 +11,7 @@ data class DataUser(
     var company: String = "",
     var followers: String = "",
     var following: String = "",
-    val avatar: String = ""
+    var avatar: String = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,

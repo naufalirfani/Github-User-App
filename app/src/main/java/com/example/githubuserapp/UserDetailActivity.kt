@@ -12,7 +12,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 
-class MovieDetailActivity : AppCompatActivity() {
+class UserDetailActivity : AppCompatActivity() {
 
     private lateinit var rvDetail: RecyclerView
     private var list: ArrayList<DataUser> = arrayListOf()
