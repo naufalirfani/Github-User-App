@@ -19,6 +19,7 @@
     <string name="company">Company</string>
     <string name="gambar_user">Gambar User</string>
     <string name="tidak_ada_yang_ditemukan">Tidak ada yang ditemukan</string>
+    <string name="id">ID</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

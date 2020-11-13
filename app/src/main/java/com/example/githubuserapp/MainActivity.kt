@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 main_progressbar.visibility = View.VISIBLE
+                tv_main_nothing.visibility = View.GONE
                 getRandomQuote(query)
                 return false
             }
@@ -52,6 +53,10 @@ class MainActivity : AppCompatActivity() {
     private fun showRecyclerList() {
         tv_main_nothing.visibility = View.GONE
         main_progressbar.visibility = View.GONE
+
+        if(listItems.isEmpty()){
+            tv_main_nothing.visibility = View.VISIBLE
+        }
         rvHeroes.layoutManager = LinearLayoutManager(this)
         val listHeroAdapter = ListUserAdapter(listItems)
         rvHeroes.adapter = listHeroAdapter
@@ -83,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 responseBody: ByteArray
             ) {
                 // Jika koneksi berhasil
+                listItems.clear()
                 val result = String(responseBody)
                 try {
                     val responseObject = JSONObject(result)
@@ -91,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                         val user = list.getJSONObject(i)
                         val userItems = DataUser()
                         userItems.username = user.getString("login")
-                        userItems.name = ""
+                        userItems.name = user.getInt("id").toString()
                         userItems.location = ""
                         userItems.repository = user.getString("repos_url")
                         userItems.company = ""

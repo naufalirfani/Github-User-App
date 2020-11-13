@@ -39,7 +39,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
                     Target.SIZE_ORIGINAL))
             .into(holder.imgPhoto)
         holder.tvUsername.text = user.username
-
+        holder.tvId.text = user.name
         getFollowersOrFollowing(user.followers, " Followers", holder.itemView.context, holder.tvFollowers)
         getFollowersOrFollowing(user.following, " Following", holder.itemView.context, holder.tvFollowing)
 
@@ -71,6 +71,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvUsername: TextView = itemView.findViewById(R.id.tv_username)
+        var tvId: TextView = itemView.findViewById(R.id.tv_id)
         var tvFollowers: TextView = itemView.findViewById(R.id.tv_followers)
         var tvFollowing: TextView = itemView.findViewById(R.id.tv_following)
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
@@ -86,6 +87,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
+                listItems2.clear()
                 val result = String(responseBody)
                 try {
                     val responseObject = JSONArray(result)
