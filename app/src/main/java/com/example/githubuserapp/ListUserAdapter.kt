@@ -61,7 +61,8 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
             user.company,
             user.followers,
             user.following,
-            user.avatar
+            user.avatar,
+            user.publicRepo
         )
 
         holder.itemView.setOnClickListener{

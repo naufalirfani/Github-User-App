@@ -1,15 +1,11 @@
 package com.example.githubuserapp
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
@@ -22,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_movie_detail.*
 import org.json.JSONObject
 
 
+@Suppress("DEPRECATION")
 class UserDetailActivity : AppCompatActivity() {
 
     private var user: DataUser? = null
@@ -39,45 +36,15 @@ class UserDetailActivity : AppCompatActivity() {
 
         btn_detail_back.setOnClickListener { onBackPressed() }
 
-        val mFragmentManager = supportFragmentManager
-        val mFollowersFragment = FollowersFragment(user?.followers, " Followers", this, tv_followers)
-        mFragmentManager
-            .beginTransaction()
-            .add(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
-            .commit()
-
-        tabLayout1.addTab(tabLayout1.newTab().setText("Followers"))
-        tabLayout1.addTab(tabLayout1.newTab().setText("Following"))
-        tabLayout1.setTabTextColors(Color.parseColor("#BDBDBD"), Color.parseColor("#FFFFFF"))
-        tabLayout1.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                if(p0?.position == 0){
-                    mFragmentManager.beginTransaction().apply {
-                        replace(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
-                        addToBackStack(null)
-                        commit()
-                    }
-                }
-                else{
-                    val mFollowingfragment = FollowingFragment()
-                    mFragmentManager.beginTransaction().apply {
-                        replace(R.id.frame_container, mFollowingfragment, FollowingFragment::class.java.simpleName)
-                        addToBackStack(null)
-                        commit()
-                    }
-                }
-            }
-
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-            }
-        })
+        loadFragment()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -145,11 +112,64 @@ class UserDetailActivity : AppCompatActivity() {
         tv_detail_name.text = user.name
         tv_detail_company.text = user.company
         tv_detail_location.text = user.location
-        val following = user.following + " Following"
         tv_followers.text = ""
-        tv_following.text = following
+        tv_following.text = ""
         val jumlahRepo = user.publicRepo + " " + resources.getString(R.string.repositories)
         tv_detail_repo.text = jumlahRepo
+    }
+
+    private fun loadFragment(){
+        try{
+            val mFragmentManager = supportFragmentManager
+            val mFollowersFragment = FollowersFragment(user?.followers, " Followers", applicationContext, tv_followers)
+            val mFollowingfragment = FollowingFragment(user?.following, " Following", applicationContext, tv_following, 0)
+            mFragmentManager
+                .beginTransaction()
+                .add(R.id.frame_container, mFollowingfragment, FollowingFragment::class.java.simpleName)
+                .commit()
+
+            mFragmentManager.beginTransaction().apply {
+                replace(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
+                addToBackStack(null)
+                commit()
+            }
+
+            tabLayout1.addTab(tabLayout1.newTab().setText("Followers"))
+            tabLayout1.addTab(tabLayout1.newTab().setText("Following"))
+            tabLayout1.setTabTextColors(Color.parseColor("#BDBDBD"), Color.parseColor("#FFFFFF"))
+            tabLayout1.setSelectedTabIndicatorHeight(4)
+            tabLayout1.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(p0: TabLayout.Tab?) {
+                    if(p0?.position == 0){
+                        mFragmentManager.beginTransaction().apply {
+                            replace(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
+                            addToBackStack(null)
+                            commit()
+                        }
+                    }
+                    else{
+                        mFragmentManager.beginTransaction().apply {
+                            val mFollowingfragment2 = FollowingFragment(user?.following, " Following", applicationContext, tv_following, p0?.position)
+                            replace(R.id.frame_container, mFollowingfragment2, FollowingFragment::class.java.simpleName)
+                            addToBackStack(null)
+                            commit()
+                        }
+                    }
+                }
+
+                override fun onTabReselected(p0: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(p0: TabLayout.Tab?) {
+
+                }
+            })
+        }
+        catch (e: Exception) {
+            Toast.makeText(this@UserDetailActivity, e.message, Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
     }
 }
 

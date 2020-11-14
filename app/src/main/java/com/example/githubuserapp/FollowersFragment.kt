@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
+import kotlinx.android.synthetic.main.fragment_followers.*
 import org.json.JSONArray
 
 /**
@@ -22,8 +22,7 @@ import org.json.JSONArray
 class FollowersFragment(private val url: String?,
                         private val penanda: String?,
                         private val context2: Context,
-                        private val textView: TextView
-) : Fragment() {
+                        private val textView: TextView) : Fragment() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
 
@@ -63,20 +62,22 @@ class FollowersFragment(private val url: String?,
                         userItems.location = ""
                         userItems.repository = user.getString("repos_url")
                         userItems.company = ""
-                        val followingUrl = user.getString("followers_url")
+                        userItems.followers = user.getString("followers_url")
+                        val followingUrl = user.getString("following_url")
                         val followingUrlFix = followingUrl.replace("{/other_user}", "")
                         userItems.following = followingUrlFix
                         userItems.avatar = user.getString("avatar_url")
                         listItems2.add(userItems)
                     }
+                    rv_followers.layoutManager = LinearLayoutManager(context)
+                    val adapter = ListUserAdapter()
+                    adapter.setData(listItems2)
+                    adapter.notifyDataSetChanged()
+                    rv_followers.adapter = adapter
+
                     if(penanda == " Followers"){
                         val followers = listItems2.size.toString() + penanda
                         textView.text = followers
-                    }
-                    else{
-                        val followings = listItems2.size.toString() + penanda
-                        textView.text = followings
-
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
