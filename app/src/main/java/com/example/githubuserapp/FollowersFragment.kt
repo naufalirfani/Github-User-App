@@ -1,28 +1,49 @@
 package com.example.githubuserapp
 
+
 import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import org.json.JSONObject
+import org.json.JSONArray
 
-class MainViewModel : ViewModel() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class FollowersFragment(private val url: String?,
+                        private val penanda: String?,
+                        private val context2: Context,
+                        private val textView: TextView
+) : Fragment() {
 
-    private val listUsers = MutableLiveData<ArrayList<DataUser>>()
+    private var listItems2: ArrayList<DataUser> = arrayListOf()
 
-    fun setUser(username: String?, context: Context, tv: TextView, loading: ProgressBar) {
-        val listItems = ArrayList<DataUser>()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_followers, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getFollowersOrFollowing(url, penanda, context2, textView)
+    }
+
+    private fun getFollowersOrFollowing(url:String?, penanda: String?, context: Context, textView: TextView){
         val client = AsyncHttpClient()
-        val url = "https://api.github.com/search/users?q=$username"
-        client.addHeader("Authorization", "token 187eb466afb595a53a772e6cf6b007819ab293ef")
+        client.addHeader("Authorization", "token c5c9d1d8cef9ce23b234ecfd6a7f5b105bc92b77")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -30,34 +51,32 @@ class MainViewModel : ViewModel() {
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                // Jika koneksi berhasil
-                listItems.clear()
+                listItems2.clear()
                 val result = String(responseBody)
                 try {
-                    val responseObject = JSONObject(result)
-                    val list = responseObject.getJSONArray("items")
-                    for (i in 0 until list.length()) {
-                        val user = list.getJSONObject(i)
+                    val responseObject = JSONArray(result)
+                    for (i in 0 until responseObject.length()) {
+                        val user = responseObject.getJSONObject(i)
                         val userItems = DataUser()
                         userItems.username = user.getString("login")
                         userItems.name = user.getInt("id").toString()
                         userItems.location = ""
                         userItems.repository = user.getString("repos_url")
                         userItems.company = ""
-                        userItems.followers = user.getString("followers_url")
-                        val followingUrl = user.getString("following_url")
+                        val followingUrl = user.getString("followers_url")
                         val followingUrlFix = followingUrl.replace("{/other_user}", "")
                         userItems.following = followingUrlFix
                         userItems.avatar = user.getString("avatar_url")
-                        userItems.publicRepo = "0"
-                        listItems.add(userItems)
+                        listItems2.add(userItems)
                     }
-                    if(listItems.isNotEmpty()){
-                        listUsers.postValue(listItems)
+                    if(penanda == " Followers"){
+                        val followers = listItems2.size.toString() + penanda
+                        textView.text = followers
                     }
                     else{
-                        loading.visibility = View.GONE
-                        tv.visibility = View.VISIBLE
+                        val followings = listItems2.size.toString() + penanda
+                        textView.text = followings
+
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -79,17 +98,8 @@ class MainViewModel : ViewModel() {
                     404 -> "$statusCode : Not Found"
                     else -> "$statusCode : ${error.message}"
                 }
-                if(errorMessage == "$statusCode : Not Found"){
-                    tv.visibility = View.VISIBLE
-                }
-                else{
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    fun getUser(): LiveData<ArrayList<DataUser>> {
-        return listUsers
     }
 }

@@ -11,9 +11,11 @@ data class DataUser(
     var company: String = "",
     var followers: String = "",
     var following: String = "",
-    var avatar: String = ""
+    var avatar: String = "",
+    var publicRepo: String = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
@@ -33,6 +35,7 @@ data class DataUser(
         parcel.writeString(followers)
         parcel.writeString(following)
         parcel.writeString(avatar)
+        parcel.writeString(publicRepo)
     }
 
     override fun describeContents(): Int {

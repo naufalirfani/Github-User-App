@@ -102,12 +102,14 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
                         val user = responseObject.getJSONObject(i)
                         val userItems = DataUser()
                         userItems.username = user.getString("login")
-                        userItems.name = ""
+                        userItems.name = user.getInt("id").toString()
                         userItems.location = ""
                         userItems.repository = user.getString("repos_url")
                         userItems.company = ""
-                        userItems.followers = ""
-                        userItems.following = ""
+                        userItems.followers = user.getString("followers_url")
+                        val followingUrl = user.getString("following_url")
+                        val followingUrlFix = followingUrl.replace("{/other_user}", "")
+                        userItems.following = followingUrlFix
                         userItems.avatar = user.getString("avatar_url")
                         listItems2.add(userItems)
                     }

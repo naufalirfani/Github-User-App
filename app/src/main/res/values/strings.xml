@@ -20,6 +20,8 @@
     <string name="gambar_user">Gambar User</string>
     <string name="tidak_ada_yang_ditemukan">Tidak ada yang ditemukan</string>
     <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="repositories">Repositories</string>
 
     <string-array name="username">
         <item>JakeWharton</item>
@@ -124,4 +126,8 @@
         <item>user9</item>
         <item>user10</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="detail_user">Detail User</string>
 </resources>
