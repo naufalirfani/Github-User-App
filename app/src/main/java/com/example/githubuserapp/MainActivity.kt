@@ -6,32 +6,39 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.loopj.android.http.AsyncHttpClient
-import com.loopj.android.http.AsyncHttpResponseHandler
-import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var rvHeroes: RecyclerView
-    private var listItems: ArrayList<DataUser> = arrayListOf()
     private lateinit var searchView: SearchView
+
+    private lateinit var adapter: ListUserAdapter
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val actionBar = supportActionBar
-        actionBar!!.title = "Github Users"
+        actionBar!!.title = "Github Users Search"
+
 
         rvHeroes = findViewById(R.id.rv_heroes)
         rvHeroes.setHasFixedSize(true)
+
+        adapter = ListUserAdapter()
+        adapter.notifyDataSetChanged()
+
+        rvHeroes.layoutManager = LinearLayoutManager(this)
+        rvHeroes.adapter = adapter
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
 
         tv_main_nothing.visibility = View.GONE
         main_progressbar.visibility = View.GONE
@@ -40,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 main_progressbar.visibility = View.VISIBLE
                 tv_main_nothing.visibility = View.GONE
-                getRandomQuote(query)
+                mainViewModel.setUser(query, applicationContext, tv_main_nothing, main_progressbar)
                 return false
             }
 
@@ -48,18 +55,16 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
-    }
 
-    private fun showRecyclerList() {
-        tv_main_nothing.visibility = View.GONE
-        main_progressbar.visibility = View.GONE
-
-        if(listItems.isEmpty()){
-            tv_main_nothing.visibility = View.VISIBLE
-        }
-        rvHeroes.layoutManager = LinearLayoutManager(this)
-        val listHeroAdapter = ListUserAdapter(listItems)
-        rvHeroes.adapter = listHeroAdapter
+        mainViewModel.getUser().observe(this, Observer { DataUser ->
+            if (DataUser != null) {
+                adapter.setData(DataUser)
+                main_progressbar.visibility = View.GONE
+            }
+            else{
+                tv_main_nothing.visibility = View.VISIBLE
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,68 +79,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentAboutMe)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun getRandomQuote(username: String?) {
-        val client = AsyncHttpClient()
-        val url = "https://api.github.com/search/users?q=$username"
-        client.addHeader("Authorization", "token 187eb466afb595a53a772e6cf6b007819ab293ef")
-        client.addHeader("User-Agent", "request")
-        client.get(url, object : AsyncHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray
-            ) {
-                // Jika koneksi berhasil
-                listItems.clear()
-                val result = String(responseBody)
-                try {
-                    val responseObject = JSONObject(result)
-                    val list = responseObject.getJSONArray("items")
-                    for (i in 0 until list.length()) {
-                        val user = list.getJSONObject(i)
-                        val userItems = DataUser()
-                        userItems.username = user.getString("login")
-                        userItems.name = user.getInt("id").toString()
-                        userItems.location = ""
-                        userItems.repository = user.getString("repos_url")
-                        userItems.company = ""
-                        userItems.followers = user.getString("followers_url")
-                        val following_url = user.getString("followers_url")
-                        val following_url_fix = following_url.replace("{/other_user}", "")
-                        userItems.following = following_url_fix
-                        userItems.avatar = user.getString("avatar_url")
-                        listItems.add(userItems)
-                    }
-                    showRecyclerList()
-                } catch (e: Exception) {
-                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
-                }
-
-            }
-
-            override fun onFailure(
-                statusCode: Int,
-                headers: Array<Header>,
-                responseBody: ByteArray,
-                error: Throwable
-            ) {
-
-                val errorMessage = when (statusCode) {
-                    401 -> "$statusCode : Bad Request"
-                    403 -> "$statusCode : Forbidden"
-                    404 -> "$statusCode : Not Found"
-                    else -> "$statusCode : ${error.message}"
-                }
-                if(errorMessage == "$statusCode : Not Found"){
-                    tv_main_nothing.visibility = View.VISIBLE
-                }
-                else{
-                    Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
     }
 }

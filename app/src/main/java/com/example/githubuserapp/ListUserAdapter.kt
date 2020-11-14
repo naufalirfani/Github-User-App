@@ -19,9 +19,16 @@ import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
 
-class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
+
+    private val mData = ArrayList<DataUser>()
+    fun setData(items: ArrayList<DataUser>) {
+        mData.clear()
+        mData.addAll(items)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
         val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.list_user, viewGroup, false)
@@ -30,7 +37,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val user = listUser[position]
+        val user = mData[position]
 //        val id: Int = holder.itemView.resources.getIdentifier("com.example.githubuserapp:drawable/${user.avatar}", null, null)
         Glide.with(holder.itemView.context)
             .load(user.avatar)
@@ -66,7 +73,7 @@ class ListUserAdapter(private val listUser: ArrayList<DataUser>) : RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        return listUser.size
+        return mData.size
     }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

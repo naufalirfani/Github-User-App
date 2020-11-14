@@ -31,7 +31,7 @@ class UserDetailActivity : AppCompatActivity() {
 
         val actionbar = supportActionBar
         actionbar!!.title = "Detail User"
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp)
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val id: Int = resources.getIdentifier("com.example.githubuserapp:drawable/${user?.avatar}", null, null)
