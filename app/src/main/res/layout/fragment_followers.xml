@@ -10,5 +10,12 @@
         android:layout_height="wrap_content"
         android:background="#F2F2F2"
         tools:listitem="@layout/list_user"/>
+    <ProgressBar
+        android:id="@+id/followers_progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="32dp"
+        android:visibility="visible"/>
 
 </FrameLayout>

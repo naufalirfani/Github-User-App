@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ class UserDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_movie_detail)
 
         user = intent.getParcelableExtra("userGithub")
+        detail_progressbar.visibility = View.VISIBLE
         setUser(user?.username)
 
         val actionbar = supportActionBar
@@ -116,6 +118,8 @@ class UserDetailActivity : AppCompatActivity() {
         tv_following.text = ""
         val jumlahRepo = user.publicRepo + " " + resources.getString(R.string.repositories)
         tv_detail_repo.text = jumlahRepo
+
+        detail_progressbar.visibility = View.GONE
     }
 
     private fun loadFragment(){

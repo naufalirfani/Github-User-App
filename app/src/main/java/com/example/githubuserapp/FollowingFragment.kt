@@ -42,6 +42,9 @@ class FollowingFragment(private val url: String?,
     }
 
     private fun getFollowersOrFollowing(url:String?, penanda: String?, context: Context, textView: TextView){
+        if(lokasi == 1){
+            following_progressbar.visibility = View.VISIBLE
+        }
         val client = AsyncHttpClient()
         client.addHeader("Authorization", "token c5c9d1d8cef9ce23b234ecfd6a7f5b105bc92b77")
         client.addHeader("User-Agent", "request")
@@ -81,6 +84,8 @@ class FollowingFragment(private val url: String?,
                         adapter.setData(listItems2)
                         adapter.notifyDataSetChanged()
                         rv_following.adapter = adapter
+
+                        following_progressbar.visibility = View.GONE
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()

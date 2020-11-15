@@ -37,6 +37,7 @@ class FollowersFragment(private val url: String?,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        followers_progressbar.visibility = View.VISIBLE
         getFollowersOrFollowing(url, penanda, context2, textView)
     }
 
@@ -78,6 +79,8 @@ class FollowersFragment(private val url: String?,
                     if(penanda == " Followers"){
                         val followers = listItems2.size.toString() + penanda
                         textView.text = followers
+
+                        followers_progressbar.visibility = View.GONE
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
