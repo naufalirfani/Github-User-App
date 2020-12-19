@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_account_circle_white_24dp"
         app:showAsAction="always"
         android:title="@string/about" />
+    <item
+        android:id="@+id/setting_item"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="always"
+        android:title="@string/about" />
 </menu>

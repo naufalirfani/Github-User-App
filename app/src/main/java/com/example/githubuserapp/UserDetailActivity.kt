@@ -41,6 +41,11 @@ class UserDetailActivity : AppCompatActivity() {
         loadFragment()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setUser(user?.username)
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(applicationContext, MainActivity::class.java)
@@ -134,7 +139,6 @@ class UserDetailActivity : AppCompatActivity() {
 
             mFragmentManager.beginTransaction().apply {
                 replace(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
-                addToBackStack(null)
                 commit()
             }
 
@@ -147,7 +151,6 @@ class UserDetailActivity : AppCompatActivity() {
                     if(p0?.position == 0){
                         mFragmentManager.beginTransaction().apply {
                             replace(R.id.frame_container, mFollowersFragment, FollowersFragment::class.java.simpleName)
-                            addToBackStack(null)
                             commit()
                         }
                     }
@@ -155,7 +158,6 @@ class UserDetailActivity : AppCompatActivity() {
                         mFragmentManager.beginTransaction().apply {
                             val mFollowingfragment2 = FollowingFragment(user?.following, " Following", applicationContext, tv_following, p0?.position)
                             replace(R.id.frame_container, mFollowingfragment2, FollowingFragment::class.java.simpleName)
-                            addToBackStack(null)
                             commit()
                         }
                     }
