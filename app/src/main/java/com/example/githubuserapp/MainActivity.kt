@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 main_progressbar.visibility = View.VISIBLE
                 tv_main_nothing.visibility = View.GONE
-                mainViewModel.setUser(query, applicationContext, tv_main_nothing, main_progressbar)
+                mainViewModel.setUser(query, this@MainActivity, tv_main_nothing, main_progressbar)
                 return false
             }
 

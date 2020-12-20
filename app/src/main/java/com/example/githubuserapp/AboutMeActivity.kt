@@ -13,10 +13,12 @@ class AboutMeActivity : AppCompatActivity() {
 
         val actionbar = supportActionBar
         //set actionbar title
-        actionbar!!.title = "About Me"
-        //set back button
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
-        actionbar.setDisplayHomeAsUpEnabled(true)
+        if (actionbar != null) {
+            actionbar.title = "About Me"
+            //set back button
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
+            actionbar.setDisplayHomeAsUpEnabled(true)
+        }
 
         val iv: ImageView = findViewById(R.id.img_my_photo)
         iv.setImageResource(resources.getIdentifier("fotoku", "drawable", packageName))

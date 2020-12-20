@@ -8,7 +8,7 @@
         android:id="@+id/rv_followers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F2F2F2"
+        android:background="@color/coloAbuMuda"
         tools:listitem="@layout/list_user"/>
     <ProgressBar
         android:id="@+id/followers_progressbar"

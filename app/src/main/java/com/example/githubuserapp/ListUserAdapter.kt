@@ -38,7 +38,6 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val user = mData[position]
-//        val id: Int = holder.itemView.resources.getIdentifier("com.example.githubuserapp:drawable/${user.avatar}", null, null)
         Glide.with(holder.itemView.context)
             .load(user.avatar)
             .apply(
@@ -50,25 +49,10 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
         getFollowersOrFollowing(user.followers, " Followers", holder.itemView.context, holder.tvFollowers)
         getFollowersOrFollowing(user.following, " Following", holder.itemView.context, holder.tvFollowing)
 
-//        holder.tvFollowers.text = user.followers + " Followers"
-//        holder.tvFollowing.text = user.following + " Following"
-
-        val userGithub = DataUser(
-            user.username,
-            user.name,
-            user.location,
-            user.repository,
-            user.company,
-            user.followers,
-            user.following,
-            user.avatar,
-            user.publicRepo
-        )
-
         holder.itemView.setOnClickListener{
             val context = holder.itemView.context
             val intent = Intent(context, UserDetailActivity::class.java)
-            intent.putExtra("userGithub", userGithub)
+            intent.putExtra("userGithub", mData)
             context.startActivity(intent)
         }
     }
@@ -87,7 +71,7 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
     private fun getFollowersOrFollowing(url:String, penanda: String, context: Context, textView: TextView){
         val client = AsyncHttpClient()
-        client.addHeader("Authorization", "token c5c9d1d8cef9ce23b234ecfd6a7f5b105bc92b77")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
