@@ -3,6 +3,7 @@ package com.example.githubuserapp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -15,7 +16,7 @@ import com.google.android.material.tabs.TabLayout
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import kotlinx.android.synthetic.main.activity_movie_detail.*
+import kotlinx.android.synthetic.main.activity_user_detail.*
 import org.json.JSONObject
 
 
@@ -23,11 +24,12 @@ import org.json.JSONObject
 class UserDetailActivity : AppCompatActivity() {
 
     private var user: DataUser? = null
+    private var isFavorite: Boolean = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+        setContentView(R.layout.activity_user_detail)
 
         user = intent.getParcelableExtra("userGithub")
         detail_progressbar.visibility = View.VISIBLE
@@ -39,6 +41,24 @@ class UserDetailActivity : AppCompatActivity() {
         btn_detail_back.setOnClickListener { onBackPressed() }
 
         loadFragment()
+
+        btn_detail_setting.setOnClickListener {
+            val intent = Intent(this@UserDetailActivity, SettingActivity::class.java)
+            startActivity(intent)
+        }
+
+        btn_detail_favorite.setOnClickListener {
+            if (isFavorite){
+                isFavorite = false
+                val img: Drawable = this.resources.getDrawable(R.drawable.ic_favorite_border_black_24dp)
+                btn_detail_favorite.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+            }
+            else{
+                isFavorite = true
+                val img: Drawable = this.resources.getDrawable(R.drawable.ic_favorite_white_24dp)
+                btn_detail_favorite.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+            }
+        }
     }
 
     override fun onResume() {
@@ -61,7 +81,7 @@ class UserDetailActivity : AppCompatActivity() {
     fun setUser(username: String?) {
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$username"
-        client.addHeader("Authorization", "token 187eb466afb595a53a772e6cf6b007819ab293ef")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(

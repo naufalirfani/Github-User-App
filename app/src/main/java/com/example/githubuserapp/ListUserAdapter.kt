@@ -49,10 +49,22 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
         getFollowersOrFollowing(user.followers, " Followers", holder.itemView.context, holder.tvFollowers)
         getFollowersOrFollowing(user.following, " Following", holder.itemView.context, holder.tvFollowing)
 
+        val userGithub = DataUser(
+            user.username,
+            user.name,
+            user.location,
+            user.repository,
+            user.company,
+            user.followers,
+            user.following,
+            user.avatar,
+            user.publicRepo
+        )
+
         holder.itemView.setOnClickListener{
             val context = holder.itemView.context
             val intent = Intent(context, UserDetailActivity::class.java)
-            intent.putExtra("userGithub", mData)
+            intent.putExtra("userGithub", userGithub)
             context.startActivity(intent)
         }
     }

@@ -15,8 +15,8 @@
         android:background="@color/colorPrimary">
         <Button
             android:id="@+id/btn_detail_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/ic_arrow_back_white_24dp"
             app:layout_constraintTop_toTopOf="@+id/detail_cons"
             app:layout_constraintLeft_toLeftOf="@+id/detail_cons"/>
@@ -31,6 +31,13 @@
             android:layout_marginRight="16dp"
             app:layout_constraintTop_toTopOf="@+id/detail_cons"
             app:layout_constraintLeft_toRightOf="@+id/btn_detail_back"/>
+        <Button
+            android:id="@+id/btn_detail_setting"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_settings_white_24dp"
+            app:layout_constraintTop_toTopOf="@+id/detail_cons"
+            app:layout_constraintRight_toRightOf="@+id/detail_cons"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_photo"
             android:layout_width="150dp"
@@ -138,6 +145,18 @@
     <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btn_detail_favorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/button_shape"
+            android:drawableStart="@drawable/ic_favorite_border_black_24dp"
+            android:drawableLeft="@drawable/ic_favorite_border_black_24dp"
+            android:layout_margin="16dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" />
+    </FrameLayout>
 </LinearLayout>

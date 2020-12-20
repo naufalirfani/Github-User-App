@@ -14,7 +14,12 @@ class SettingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setting)
 
         val setting = "Pengaturan"
-        supportActionBar?.title = setting
+        val actionBar = supportActionBar
+        if(actionBar != null){
+            actionBar.title = setting
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
+            actionBar.setDisplayHomeAsUpEnabled(true)
+        }
 
         alarmReceiver = AlarmReceiver()
         switch_reminder.setOnCheckedChangeListener { buttonView, isChecked ->

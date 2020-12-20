@@ -13,7 +13,7 @@
         android:title="@string/about" />
     <item
         android:id="@+id/favorit_item"
-        android:icon="@drawable/ic_settings_white_24dp"
+        android:icon="@drawable/ic_favorite_white_24dp"
         app:showAsAction="always"
         android:title="@string/about" />
 </menu>
