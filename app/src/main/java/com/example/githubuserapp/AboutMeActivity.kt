@@ -1,7 +1,10 @@
 package com.example.githubuserapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -34,6 +37,20 @@ class AboutMeActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu2, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if(id == R.id.setting_item){
+            val intentSetting = Intent(this@AboutMeActivity, SettingActivity::class.java)
+            startActivity(intentSetting)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

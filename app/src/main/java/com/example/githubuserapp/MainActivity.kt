@@ -82,6 +82,10 @@ class MainActivity : AppCompatActivity() {
             val intentSetting = Intent(this@MainActivity, SettingActivity::class.java)
             startActivity(intentSetting)
         }
+        else if(id == R.id.favorit_item){
+            val intentFavorite = Intent(this@MainActivity, FavoriteActivity::class.java)
+            startActivity(intentFavorite)
+        }
         return super.onOptionsItemSelected(item)
     }
 }
