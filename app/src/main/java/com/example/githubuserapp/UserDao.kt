@@ -12,7 +12,7 @@ interface UserDao {
     fun getAll(): LiveData<List<User>>
 
     @Query("SELECT * FROM tbuserfavorite WHERE name == :userId")
-    fun loadById(userId: String): User
+    fun loadById(userId: String): LiveData<User>
 
     @Insert
     fun insert(user: User)

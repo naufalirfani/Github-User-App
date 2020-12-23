@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
@@ -49,6 +50,7 @@ class FavoriteActivity : AppCompatActivity() {
 
         db.userDao().getAll().observe(this, Observer { User ->
             if (User != null) {
+                tv_favorite_nothing.visibility = View.GONE
                 adapter.setData(User)
                 favorite_progressbar.visibility = View.GONE
             }
@@ -56,6 +58,11 @@ class FavoriteActivity : AppCompatActivity() {
                 tv_favorite_nothing.visibility = View.VISIBLE
             }
         })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

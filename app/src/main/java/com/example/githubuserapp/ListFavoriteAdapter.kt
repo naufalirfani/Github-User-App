@@ -21,7 +21,7 @@ import org.json.JSONArray
 
 class ListFavoriteAdapter : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHolder>() {
 
-    private var listItems2: MutableList<User> = arrayListOf()
+    private var listItems2: ArrayList<DataUser> = arrayListOf()
 
     private var mData: List<User> = listOf()
     fun setData(items: List<User>) {
@@ -51,7 +51,7 @@ class ListFavoriteAdapter : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHol
 
         val userGithub = DataUser(
             user.username.toString(),
-            user.name.toString(),
+            user.name,
             user.location.toString(),
             user.repository.toString(),
             user.company.toString(),
@@ -97,17 +97,17 @@ class ListFavoriteAdapter : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHol
                     val responseObject = JSONArray(result)
                     for (i in 0 until responseObject.length()) {
                         val user = responseObject.getJSONObject(i)
-                        val username = user.getString("login")
-                        val name = user.getInt("id").toString()
-                        val location = ""
-                        val repository = user.getString("repos_url")
-                        val company = ""
-                        val followers = user.getString("followers_url")
+                        val userItems = DataUser()
+                        userItems.username = user.getString("login")
+                        userItems.name = user.getInt("id").toString()
+                        userItems.location = ""
+                        userItems.repository = user.getString("repos_url")
+                        userItems.company = ""
+                        userItems.followers = user.getString("followers_url")
                         val followingUrl = user.getString("following_url")
                         val followingUrlFix = followingUrl.replace("{/other_user}", "")
-                        val following = followingUrlFix
-                        val avatar = user.getString("avatar_url")
-                        val userItems = User(username, name, location, repository, company, followers, following, avatar, "0")
+                        userItems.following = followingUrlFix
+                        userItems.avatar = user.getString("avatar_url")
                         listItems2.add(userItems)
                     }
                     if(penanda == " Followers"){
