@@ -16,9 +16,6 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.fragment_following.*
 import org.json.JSONArray
 
-/**
- * A simple [Fragment] subclass.
- */
 class FollowingFragment(private val url: String?,
                         private val penanda: String?,
                         private val context2: Context,
@@ -31,7 +28,7 @@ class FollowingFragment(private val url: String?,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_following, container, false)
     }
 

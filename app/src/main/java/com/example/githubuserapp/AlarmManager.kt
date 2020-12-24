@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.Message
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -94,13 +93,6 @@ class AlarmReceiver : BroadcastReceiver() {
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
         Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show()
-    }
-
-    fun isAlarmSet(context: Context, type: String): Boolean {
-        val intent = Intent(context, AlarmReceiver::class.java)
-        val requestCode = ID_REPEATING
-
-        return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null
     }
 
     private fun isDateInvalid(date: String): Boolean {

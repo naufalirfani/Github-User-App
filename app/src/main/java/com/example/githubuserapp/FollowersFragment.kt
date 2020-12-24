@@ -16,9 +16,6 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.fragment_followers.*
 import org.json.JSONArray
 
-/**
- * A simple [Fragment] subclass.
- */
 class FollowersFragment(private val url: String?,
                         private val penanda: String?,
                         private val context2: Context,
@@ -30,7 +27,7 @@ class FollowersFragment(private val url: String?,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        
         return inflater.inflate(R.layout.fragment_followers, container, false)
     }
 

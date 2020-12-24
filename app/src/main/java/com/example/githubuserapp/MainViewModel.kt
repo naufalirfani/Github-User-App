@@ -30,7 +30,6 @@ class MainViewModel : ViewModel() {
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                // Jika koneksi berhasil
                 listItems.clear()
                 val result = String(responseBody)
                 try {

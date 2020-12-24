@@ -15,10 +15,8 @@ class AboutMeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_about_me)
 
         val actionbar = supportActionBar
-        //set actionbar title
         if (actionbar != null) {
             actionbar.title = "About Me"
-            //set back button
             actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
             actionbar.setDisplayHomeAsUpEnabled(true)
         }

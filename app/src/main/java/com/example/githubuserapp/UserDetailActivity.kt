@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
@@ -134,7 +133,6 @@ class UserDetailActivity : AppCompatActivity() {
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                // Jika koneksi berhasil
                 val result = String(responseBody)
                 try {
                     val responseObject = JSONObject(result)

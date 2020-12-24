@@ -6,18 +6,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_favorite.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class FavoriteActivity : AppCompatActivity() {
 
     private lateinit var db: AppDatabase
-    private var dataFavorite: List<User> = arrayListOf()
     private lateinit var rvFavorite: RecyclerView
     private lateinit var adapter: ListFavoriteAdapter
 
@@ -26,10 +23,8 @@ class FavoriteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_favorite)
 
         val actionbar = supportActionBar
-        //set actionbar title
         if (actionbar != null) {
             actionbar.title = "Favorite User"
-            //set back button
             actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
             actionbar.setDisplayHomeAsUpEnabled(true)
         }
