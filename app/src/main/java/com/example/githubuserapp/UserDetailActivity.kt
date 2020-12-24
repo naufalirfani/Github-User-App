@@ -1,10 +1,12 @@
 package com.example.githubuserapp
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -61,15 +63,16 @@ class UserDetailActivity : AppCompatActivity() {
             AppDatabase::class.java, "favoritedb"
         ).build()
 
-        userFavorite = User(user?.username,
-            user?.name.toString(),
-            user?.location,
-            user?.repository,
-            user?.company,
-            user?.followers,
-            user?.following,
-            user?.avatar,
-            user?.publicRepo)
+        userFavorite = User()
+        userFavorite.name = user?.name.toString()
+        userFavorite.username = user?.username
+        userFavorite.location = user?.location
+        userFavorite.repository = user?.repository
+        userFavorite.company = user?.company
+        userFavorite.followers = user?.followers
+        userFavorite.following = user?.following
+        userFavorite.avatar = user?.avatar
+        userFavorite.publicRepo = user?.publicRepo
 
         loadIfFavorite()
 
@@ -80,7 +83,8 @@ class UserDetailActivity : AppCompatActivity() {
                 btn_detail_favorite.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
                 Toast.makeText(this, "Dihapus dari Favorite", Toast.LENGTH_SHORT).show()
                 GlobalScope.launch {
-                    db.userDao().delete(userFavorite)
+                    val url = UserProvider.CONTENT_URI.toString() + "/${user?.name}"
+                    contentResolver.delete(Uri.parse(url), user?.name, null)
                 }
             }
             else{
@@ -89,7 +93,18 @@ class UserDetailActivity : AppCompatActivity() {
                 btn_detail_favorite.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
                 Toast.makeText(this, "Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
                 GlobalScope.launch {
-                    db.userDao().insert(userFavorite)
+                    val contentValue = ContentValues()
+                    contentValue.put("username", user?.username)
+                    contentValue.put("name", user?.name.toString())
+                    contentValue.put("location", user?.location)
+                    contentValue.put("repository", user?.repository)
+                    contentValue.put("company", user?.company)
+                    contentValue.put("followers", user?.followers)
+                    contentValue.put("following", user?.following)
+                    contentValue.put("avatar", user?.avatar)
+                    contentValue.put("publicRepo", user?.publicRepo)
+
+                    contentResolver.insert(UserProvider.CONTENT_URI, contentValue)
                 }
             }
         }

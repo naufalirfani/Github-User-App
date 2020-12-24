@@ -42,14 +42,18 @@ class FavoriteActivity : AppCompatActivity() {
 
         rvFavorite.layoutManager = LinearLayoutManager(this)
         rvFavorite.adapter = adapter
+    }
 
+    override fun onResume() {
+        super.onResume()
         db.userDao().getAll().observe(this, Observer { User ->
-            if (User != null) {
+            if (User.isNotEmpty()) {
                 tv_favorite_nothing.visibility = View.GONE
                 adapter.setData(User)
                 favorite_progressbar.visibility = View.GONE
             }
             else{
+                favorite_progressbar.visibility = View.GONE
                 tv_favorite_nothing.visibility = View.VISIBLE
             }
         })
