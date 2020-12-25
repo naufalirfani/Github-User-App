@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Consumer App</string>
+    <string name="tidak_ada_yang_ditemukan">Tidak ada yang ditemukan</string>
+    <string name="followers">Followers</string>
+    <string name="username">Username</string>
+    <string name="following">Following</string>
+    <string name="gambar_user">Gambar User</string>
+    <string name="id">ID</string>
+</resources>
