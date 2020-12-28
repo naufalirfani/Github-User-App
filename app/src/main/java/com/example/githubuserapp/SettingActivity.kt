@@ -22,6 +22,9 @@ class SettingActivity : AppCompatActivity() {
         }
 
         alarmReceiver = AlarmReceiver()
+        if(alarmReceiver.isAlarmSet(this)){
+            switch_reminder.isChecked = true
+        }
         switch_reminder.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
                 alarmReceiver.setRepeatingAlarm(this, "09:00")

@@ -107,6 +107,13 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
+    fun isAlarmSet(context: Context): Boolean {
+        val intent = Intent(context, AlarmReceiver::class.java)
+        val requestCode = ID_REPEATING
+
+        return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null
+    }
+
     fun cancelAlarm(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
