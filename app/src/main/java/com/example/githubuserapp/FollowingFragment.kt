@@ -16,11 +16,13 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.fragment_following.*
 import org.json.JSONArray
 
-class FollowingFragment(private val url: String?,
-                        private val penanda: String?,
-                        private val context2: Context,
-                        private val textView: TextView,
-                        private val lokasi: Int?) : Fragment() {
+class FollowingFragment(
+    private val url: String?,
+    private val penanda: String?,
+    private val context2: Context,
+    private val textView: TextView,
+    private val lokasi: Int?
+) : Fragment() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
 
@@ -38,8 +40,13 @@ class FollowingFragment(private val url: String?,
         getFollowersOrFollowing(url, penanda, context2, textView)
     }
 
-    private fun getFollowersOrFollowing(url:String?, penanda: String?, context: Context, textView: TextView){
-        if(lokasi == 1){
+    private fun getFollowersOrFollowing(
+        url: String?,
+        penanda: String?,
+        context: Context,
+        textView: TextView
+    ) {
+        if (lokasi == 1) {
             following_progressbar.visibility = View.VISIBLE
         }
         val client = AsyncHttpClient()
@@ -70,12 +77,12 @@ class FollowingFragment(private val url: String?,
                         userItems.avatar = user.getString("avatar_url")
                         listItems2.add(userItems)
                     }
-                    if(penanda == " Following"){
+                    if (penanda == " Following") {
                         val followings = listItems2.size.toString() + penanda
                         textView.text = followings
                     }
 
-                    if(lokasi == 1){
+                    if (lokasi == 1) {
                         rv_following.layoutManager = LinearLayoutManager(context)
                         val adapter = ListUserAdapter()
                         adapter.setData(listItems2)

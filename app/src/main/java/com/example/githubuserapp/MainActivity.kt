@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var rvHeroes: RecyclerView
@@ -74,17 +73,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.about_item) {
-            val intentAboutMe = Intent(this@MainActivity, AboutMeActivity::class.java)
-            startActivity(intentAboutMe)
-        }
-        else if(id == R.id.setting_item){
-            val intentSetting = Intent(this@MainActivity, SettingActivity::class.java)
-            startActivity(intentSetting)
-        }
-        else if(id == R.id.favorit_item){
-            val intentFavorite = Intent(this@MainActivity, FavoriteActivity::class.java)
-            startActivity(intentFavorite)
+        when (id) {
+            R.id.about_item -> {
+                val intentAboutMe = Intent(this@MainActivity, AboutMeActivity::class.java)
+                startActivity(intentAboutMe)
+            }
+            R.id.setting_item -> {
+                val intentSetting = Intent(this@MainActivity, SettingActivity::class.java)
+                startActivity(intentSetting)
+            }
+            R.id.favorit_item -> {
+                val intentFavorite = Intent(this@MainActivity, FavoriteActivity::class.java)
+                startActivity(intentFavorite)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

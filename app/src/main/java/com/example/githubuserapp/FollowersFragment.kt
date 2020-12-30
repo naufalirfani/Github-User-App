@@ -16,10 +16,12 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.fragment_followers.*
 import org.json.JSONArray
 
-class FollowersFragment(private val url: String?,
-                        private val penanda: String?,
-                        private val context2: Context,
-                        private val textView: TextView) : Fragment() {
+class FollowersFragment(
+    private val url: String?,
+    private val penanda: String?,
+    private val context2: Context,
+    private val textView: TextView
+) : Fragment() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
 
@@ -27,7 +29,7 @@ class FollowersFragment(private val url: String?,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        
+
         return inflater.inflate(R.layout.fragment_followers, container, false)
     }
 
@@ -38,7 +40,12 @@ class FollowersFragment(private val url: String?,
         getFollowersOrFollowing(url, penanda, context2, textView)
     }
 
-    private fun getFollowersOrFollowing(url:String?, penanda: String?, context: Context, textView: TextView){
+    private fun getFollowersOrFollowing(
+        url: String?,
+        penanda: String?,
+        context: Context,
+        textView: TextView
+    ) {
         val client = AsyncHttpClient()
         client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
@@ -73,7 +80,7 @@ class FollowersFragment(private val url: String?,
                     adapter.notifyDataSetChanged()
                     rv_followers.adapter = adapter
 
-                    if(penanda == " Followers"){
+                    if (penanda == " Followers") {
                         val followers = listItems2.size.toString() + penanda
                         textView.text = followers
 
