@@ -94,18 +94,13 @@ class UserProvider : ContentProvider() {
         selection: String?,
         selectionArgs: Array<String?>?
     ): Int {
-        when (sUriMatcher.match(uri)) {
-            NOTE -> throw java.lang.IllegalArgumentException("Invalid uri: cannot delete")
-            NOTE_ID -> {
-                if (context != null) {
-                    val count: Int? = userDao?.deleteUser(selection.toString())
-                    context!!.contentResolver
-                        .notifyChange(uri, null)
-                    return count!!
-                }
-                throw java.lang.IllegalArgumentException("Unknown URI:$uri")
-            }
-            else -> throw java.lang.IllegalArgumentException("Unknown URI:$uri")
+        val deleted: Int? = when (NOTE_ID) {
+            sUriMatcher.match(uri) -> userDao?.deleteUser(selection.toString())
+            else -> 0
         }
+
+        context?.contentResolver?.notifyChange(CONTENT_URI, null)
+
+        return deleted!!
     }
 }

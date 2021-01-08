@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_favorite.*
 
 class FavoriteActivity : AppCompatActivity() {
 
-    private lateinit var db: AppDatabase
+    lateinit var db: AppDatabase
     private lateinit var rvFavorite: RecyclerView
     private lateinit var adapter: ListFavoriteAdapter
 
@@ -37,7 +37,7 @@ class FavoriteActivity : AppCompatActivity() {
         rvFavorite = findViewById(R.id.rv_favorite)
         rvFavorite.setHasFixedSize(true)
 
-        adapter = ListFavoriteAdapter()
+        adapter = ListFavoriteAdapter(this, db)
         adapter.notifyDataSetChanged()
 
         rvFavorite.layoutManager = LinearLayoutManager(this)

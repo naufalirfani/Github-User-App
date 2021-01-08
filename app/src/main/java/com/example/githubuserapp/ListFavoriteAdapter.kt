@@ -1,8 +1,10 @@
 package com.example.githubuserapp
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +19,11 @@ import com.bumptech.glide.request.target.Target
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 
-class ListFavoriteAdapter : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHolder>() {
+class ListFavoriteAdapter(private val context: Context, private val db: AppDatabase) : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHolder>() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
 
@@ -66,6 +70,37 @@ class ListFavoriteAdapter : RecyclerView.Adapter<ListFavoriteAdapter.ListViewHol
             val intent = Intent(context, UserDetailActivity::class.java)
             intent.putExtra("userGithub", userGithub)
             context.startActivity(intent)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.setCancelable(true)
+            builder.setMessage("Apakah Anda ingin keluar?")
+
+            builder.setPositiveButton(
+                "Ya"
+            ) { dialog, _ -> // Do nothing but close the dialog
+                GlobalScope.launch {
+                    db.userDao().deleteUser(user.name)
+                }
+                Toast.makeText(context, "Satu item berhasil dihapus", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton(
+                "Tidak"
+            ) { dialog, _ -> // Do nothing
+                dialog.dismiss()
+            }
+
+            val alert: AlertDialog = builder.create()
+            alert.setOnShowListener {
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(holder.itemView.resources.getColor(R.color.coloAbuMuda))
+            }
+            alert.show()
+
+            return@setOnLongClickListener true
         }
     }
 

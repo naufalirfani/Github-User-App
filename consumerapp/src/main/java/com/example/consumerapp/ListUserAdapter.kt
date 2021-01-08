@@ -1,7 +1,12 @@
 package com.example.consumerapp
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Context
+import android.content.DialogInterface
+import android.net.Uri
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +21,14 @@ import com.bumptech.glide.request.target.Target
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 
-class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter(private val context: Context, private val resolver: ContentResolver, private val CONTENT_URI: Uri) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
     private var listItems2: ArrayList<DataUser> = arrayListOf()
+    private lateinit var uriWithId: Uri
 
     private val mData = ArrayList<DataUser>()
     fun setData(items: ArrayList<DataUser>) {
@@ -47,6 +55,40 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
         holder.tvId.text = user.name
         getFollowersOrFollowing(user.followers, " Followers", holder.itemView.context, holder.tvFollowers)
         getFollowersOrFollowing(user.following, " Following", holder.itemView.context, holder.tvFollowing)
+
+        uriWithId = Uri.parse(CONTENT_URI.toString() + "/" + user.name)
+
+        holder.itemView.setOnLongClickListener {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.setCancelable(true)
+            builder.setMessage("Apakah Anda ingin keluar?")
+
+            builder.setPositiveButton(
+                "Ya"
+            ) { dialog, _ -> // Do nothing but close the dialog
+
+                GlobalScope.launch {
+                    resolver.delete(uriWithId, user.name, null)
+                }
+                Toast.makeText(context, "Satu item berhasil dihapus", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton(
+                "Tidak"
+            ) { dialog, _ -> // Do nothing
+                dialog.dismiss()
+            }
+
+            val alert: AlertDialog = builder.create()
+            alert.setOnShowListener {
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(holder.itemView.resources.getColor(R.color.coloAbuMuda))
+            }
+            alert.show()
+
+            return@setOnLongClickListener true
+        }
     }
 
     override fun getItemCount(): Int {
@@ -122,4 +164,6 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
             }
         })
     }
+
+
 }

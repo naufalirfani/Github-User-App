@@ -35,16 +35,16 @@ class MainActivity : AppCompatActivity() {
 
         tv_main_nothing.visibility = View.GONE
 
-        rv_main.setHasFixedSize(true)
-        adapter = ListUserAdapter()
-        adapter.notifyDataSetChanged()
-        rv_main.layoutManager = LinearLayoutManager(this)
-        rv_main.adapter = adapter
-
         CONTENT_URI = Uri.Builder().scheme(SCHEME)
             .authority(AUTHORITY)
             .appendPath(TABLE_NAME)
             .build()
+
+        rv_main.setHasFixedSize(true)
+        adapter = ListUserAdapter(this, contentResolver, CONTENT_URI)
+        adapter.notifyDataSetChanged()
+        rv_main.layoutManager = LinearLayoutManager(this)
+        rv_main.adapter = adapter
 
         val handlerThread = HandlerThread("DataObserver")
         handlerThread.start()
@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity() {
             main_progressbar.visibility = View.INVISIBLE
             if (users.size > 0) {
                 adapter.setData(users)
+                tv_main_nothing.visibility = View.GONE
             } else {
                 adapter.setData(arrayListOf())
                 tv_main_nothing.visibility = View.VISIBLE
