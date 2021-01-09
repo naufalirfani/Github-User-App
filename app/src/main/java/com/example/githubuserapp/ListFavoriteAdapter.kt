@@ -75,7 +75,7 @@ class ListFavoriteAdapter(private val context: Context, private val db: AppDatab
         holder.itemView.setOnLongClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setCancelable(true)
-            builder.setMessage("Apakah Anda ingin keluar?")
+            builder.setMessage("Apakah Anda ingin menghapus dari favorite?")
 
             builder.setPositiveButton(
                 "Ya"
@@ -83,7 +83,7 @@ class ListFavoriteAdapter(private val context: Context, private val db: AppDatab
                 GlobalScope.launch {
                     db.userDao().deleteUser(user.name)
                 }
-                Toast.makeText(context, "Satu item berhasil dihapus", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Dihapus dari favorite", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 
@@ -96,7 +96,7 @@ class ListFavoriteAdapter(private val context: Context, private val db: AppDatab
             val alert: AlertDialog = builder.create()
             alert.setOnShowListener {
                 alert.getButton(AlertDialog.BUTTON_NEGATIVE)
-                    .setTextColor(holder.itemView.resources.getColor(R.color.coloAbuMuda))
+                    .setTextColor(holder.itemView.resources.getColor(R.color.colorPrimary))
             }
             alert.show()
 
